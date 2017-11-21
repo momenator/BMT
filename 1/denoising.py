@@ -1,4 +1,3 @@
-#   -*- coding: utf-8 -*-
 #####################################################################
 #
 #   denoising.py
@@ -23,14 +22,9 @@ import scipy.optimize
 
 # problem with dimensions
 # Iα is supposed to be a single number! I think
-#   -- Nope! I_aplha is the linear combination of the (difference images) * coefficients.
-#   -- We are trying to optimize the coefficients to minimize the
-#   -- difference between denoised image(which is given) and I_alpha.
-#   -- The denoised image is not generally available.
-#   -- I_alpha should be (64x64)
-# D is 3 dimensional matrix (64x64x5) - the 5 difference images
-# r is 2 dimensional matrix (64x64)   - the single residual image component.
-# alpha is 1 dimensional matrix (5)   - the coefficients for the 5 difference images.
+# D is 3 dimensional matrix (64x64x5)
+# r is 2 dimensional matrix (64x64)
+# alpha is 1 dimensional matrix (5)
 
 def linear_combination(alpha, d, r):
     # to be implemented!
@@ -43,9 +37,10 @@ def linear_combination(alpha, d, r):
     # dummy implementation to be replaced
     # let's get the smallest value of Iα
     i_alpha = 0 * r
-    for i in range(len(d[0,0,:])):
-        i_alpha += alpha[i]*d[:,:,i]
-    i_alpha += r
+
+    for row in range(len(r)):
+        for column in range(len(r[0])):
+            i_alpha[row][column] = sum([alpha * delta for alpha, delta in zip(alpha, d[row][column])]) + r[row][column]
     return i_alpha
 
 def cost_function(alpha, i_orig, d, r):

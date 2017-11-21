@@ -1,6 +1,5 @@
 import numpy as np
 import timeit
-import pprint
 
 def projection(u, x): return (np.dot(x, u) / np.dot(u, u)) * u
 
@@ -78,8 +77,7 @@ elapsed = timeit.default_timer() - start_time
 start_time = timeit.default_timer()
 q, r = np.linalg.qr(A)
 print('NUMPY')
-pprint.pprint(q)
-pprint.pprint(r)
+print(q, r)
 y = np.matmul(q.T, b)
 x_qr = np.linalg.solve(r, y)
 elapsed = timeit.default_timer() - start_time
@@ -88,9 +86,7 @@ print('using numpy qr : {}, took {} seconds'.format(x_qr, elapsed))
 start_time = timeit.default_timer()
 q2, r2 = my_qr(A)
 print('OWN')
-pprint.pprint(q)
-pprint.pprint(r)
-
+print(q2, r2)
 y2 = np.matmul(q2.T, b)
 x_qr2 = np.linalg.solve(r2, y2)
 elapsed = timeit.default_timer() - start_time
