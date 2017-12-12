@@ -36,7 +36,7 @@ def assemble(numbering, I, sigma):
                 # generate entries for northern neighbor
                 # compute weight
                 w = weight(float(I[i, j]) - float(I[i - 1, j]), sigma)
-                pprint(w)
+                # pprint(w)
                 # update sum
                 W = W + w # u*(SUM OF ALL WEIGHTS)
 
@@ -144,12 +144,14 @@ def art(A, b, iterations):
 
 
 # choose sigma
-# Higher sigma Results in a smoother segment boundary.
+# Higher sigma Results in a smoother segment boundary. But This is inaccurate segmentation.
 # sigma = 0.0005
 # sigma = 0.05
-sigma = 0.1
-# sigma = 1.0
-sigma = 10.0
+# sigma = 0.1
+# sigma = 2.0  Anything below (<=2.0) this causes a singular matrix unsolvable by linalg
+# sigma = 3.0  - 3.0 ... 4.0 Produces artifacts in the top right corner of the image.
+sigma = 5.0
+# sigma = 10.0
 # sigma = 1000.0
 # sigma = -0.100
 # sigma = -0.1
@@ -202,12 +204,13 @@ plt.title('single pixel numbering')
 # pprint(b)
 # compute solution
 # ART implementation from exercise 2.
-x = art(A, b, 50)
+# linalg.solve gives far better results, but needs proper sigma(>=10)
+# x = art(A, b, 50)
 
 # Cant use linalg solver for small values of sigma since that produces a singular matrix.
-# x = np.linalg.solve(A, b)
+x = np.linalg.solve(A, b)
 
-print(x)
+# print(x)
 
 # generate segmentation
 seg = np.zeros(I.shape)
